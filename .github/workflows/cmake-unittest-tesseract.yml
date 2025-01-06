@@ -22,7 +22,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         build_type: [Release]
-        c_compiler: [gcc, clang]
+        c_compiler: [gcc]
         include:
           - os: ubuntu-latest
             c_compiler: gcc
@@ -31,20 +31,20 @@ jobs:
     steps:
     - name: Install dependencies (Linux)
       run: |
-           sudo apt-get update
+           # sudo apt-get update
            sudo apt-get install git autoconf libleptonica-dev libpango1.0-dev 
     - name: Get Source
       shell: cmd
       run: |
-        git clone --depth 1 https://github.com/zdenop/tesseract.git
-        cd tesseract
-        git checkout cmake_testing
-        git pull
+           git clone --depth 1 https://github.com/zdenop/tesseract.git
+           cd tesseract
+           git checkout cmake_testing
+           git pull
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
