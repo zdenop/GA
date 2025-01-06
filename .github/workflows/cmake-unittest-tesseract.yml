@@ -21,11 +21,12 @@ jobs:
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       # '🟨','🟦','🟩','🟥','🟪'
       matrix:
-        os: ['🟥 ubuntu-24.04']
+        os: [ubuntu-24.04']
         build_type: [Release]
         c_compiler: [g++]
         include:
-          - os: ubuntu-24.04
+          - icon: '🟥'
+            os: ubuntu-24.04
             cpp_compiler: g++
             cxxflags: -Wno-format-security
 
@@ -42,7 +43,7 @@ jobs:
            git submodule update --init
            git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
            cp tessdata_unittest/fonts/* test/testing/
-           cp tessdata_unittest/* ../
+           cp -r tessdata_unittest/* ../
 
     - name: '️🔧 Set build output dir'
       id: strings
