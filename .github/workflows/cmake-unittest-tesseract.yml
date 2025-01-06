@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    # name: '🟩 ${{ matrix.os }}'
+    name: '${{ matrix.icon }} ${{ matrix.os }}'
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -15,14 +15,16 @@ jobs:
       # '🟨','🟦','🟩','🟥','🟪'
       matrix:
         os: [ubuntu-24.04']
-        build_type: [Release]
         include:
           - os: ubuntu-24.04
             cpp_compiler: g++
             cxxflags: -Wno-format-security
+            build_type: Release
             icon: '🟦'
           - os: ubuntu-24.04
             cpp_compiler: clang++
+            cxxflags: ''
+            build_type: Release            
             icon: '🟪'
 
     steps:
