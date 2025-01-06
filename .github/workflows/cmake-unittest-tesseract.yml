@@ -24,7 +24,7 @@ jobs:
         build_type: [Release]
         c_compiler: [g++]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             cpp_compiler: g++
 
     steps:
@@ -37,6 +37,7 @@ jobs:
       run: |
            git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
            cd tesseract
+           git submodule update --init
            git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
            cp tessdata_unittest/fonts/* test/testing/
            mv tessdata_unittest/* ../
