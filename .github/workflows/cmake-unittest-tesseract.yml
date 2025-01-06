@@ -20,8 +20,10 @@ jobs:
           - os: ubuntu-24.04
             cpp_compiler: g++
             cxxflags: -Wno-format-security
+            icon: '🟦'
           - os: ubuntu-24.04
             cpp_compiler: clang++
+            icon: '🟪'
 
     steps:
     - name: '📦 Install dependencies (Linux)'
