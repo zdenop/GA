@@ -34,7 +34,6 @@ jobs:
            # sudo apt-get update
            sudo apt-get install git autoconf libleptonica-dev libpango1.0-dev 
     - name: Get Source
-      shell: cmd
       run: |
            git clone --depth 1 https://github.com/zdenop/tesseract.git
            cd tesseract
