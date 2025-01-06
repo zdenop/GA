@@ -1,5 +1,5 @@
 name: 🧪 Tesseract CMake Unittests
-  
+
 on:
   workflow_dispatch:
 
@@ -25,30 +25,31 @@ jobs:
           - os: ubuntu-latest
             cpp_compiler: clang++
             cxxflags: ''
-            build_type: Release            
+            build_type: Release
             icon: '🟪'
-            
+
     steps:
     - name: '📦 Install dependencies (Linux)'
       run: >
            sudo apt-get install libleptonica-dev libpango1.0-dev
       if: runner.os == 'Linux'
-      
+
     - name: '️🆔 Set build output dir'
       id: strings
       shell: bash
       run: |
            echo "build-output-dir=${{ github.workspace }}/tesseract/build" >> "$GITHUB_OUTPUT"
-           
+
     - name: '🧰 Get Source'
       run: |
-           git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
+           git clone --depth 1 https://github.com/tesseract-ocr/tesseract.git
+           # git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
            cd tesseract
            git submodule update --init
            git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
            mv tessdata_unittest/fonts/* ${{ github.workspace }}/tesseract/test/testing/
            cp -R -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
-           
+
     - name: '🔧 Configure CMake'
       run: |
         cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="${{ matrix.cxxflags}}" \
@@ -65,64 +66,3 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: |
         ctest --build-config ${{ matrix.build_type }} --test-dir ${{ steps.strings.outputs.build-output-dir }} --output-on-failure -O test-suite.log -j 4
-      
-  Windows:
-    name: '⬛ ${{ matrix.os }}.${{ matrix.build_type }}.${{ matrix.config.msystem }}'
-    runs-on: ${{ matrix.os }}
-    defaults:
-        run:
-            shell: msys2 {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ windows-latest ]
-        config:
-          - { msystem: UCRT64,  arch: x86_64,  compiler: g++ }
-        build_type:
-          - Release
-
-    steps:
-      - name: Install Base Dependencies
-        uses: msys2/setup-msys2@v2
-        with:
-          cache: false
-          msystem: ${{ matrix.config.msystem }}
-          update: true
-          install: >-
-            git
-            base-devel
-          pacboy: >-
-            cc:p
-            cmake:p
-            ninja:p
-            leptonica:p
-            pango:p   
-            
-      - name: '🧰 Get Source'
-        run: |
-             git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
-             cd tesseract
-             git submodule update --init
-             git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
-             mv tessdata_unittest/fonts/* "${{ github.workspace }}/tesseract/test/testing"
-             cp -R -u -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
-      - name: '️🆔 Set build output dir'
-        id: strings
-        shell: bash
-        run: |
-             echo "build-output-dir=${{ github.workspace }}/tesseract/build" >> "$GITHUB_OUTPUT"         
-
-      - name: configure cmake
-        env:
-          CXX: ${{ matrix.config.compiler }}
-        run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }} 
-              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="${{ matrix.cxxflags}}" \
-              -S ${{ github.workspace }}/tesseract -DSW_BUILD=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=ON -DBUILD_TESTS=ON
-              -GNinja
-
-      - name: build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -j 4
-
-      - name: test
-        run: ctest -C ${{ matrix.build_type }} --test-dir ${{ steps.strings.outputs.build-output-dir }} --output-on-failure -O test-suite.log -j 4
