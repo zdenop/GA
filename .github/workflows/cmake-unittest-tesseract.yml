@@ -82,20 +82,6 @@ jobs:
           - Release
 
     steps:
-      - name: '🧰 Get Source'
-        run: |
-             git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
-             cd tesseract
-             git submodule update --init
-             git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
-             mv tessdata_unittest/fonts/* ${{ github.workspace }}/tesseract/test/testing/
-             cp -R -u -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
-      - name: '️🆔 Set build output dir'
-        id: strings
-        shell: bash
-        run: |
-             echo "build-output-dir=${{ github.workspace }}/tesseract/build" >> "$GITHUB_OUTPUT"
-
       - name: Install Base Dependencies
         uses: msys2/setup-msys2@v2
         with:
@@ -110,7 +96,21 @@ jobs:
             cmake:p
             ninja:p
             leptonica:p
-            pango:p            
+            pango:p   
+            
+      - name: '🧰 Get Source'
+        run: |
+             git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
+             cd tesseract
+             git submodule update --init
+             git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
+             mv tessdata_unittest/fonts/* ${{ github.workspace }}/tesseract/test/testing/
+             cp -R -u -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
+      - name: '️🆔 Set build output dir'
+        id: strings
+        shell: bash
+        run: |
+             echo "build-output-dir=${{ github.workspace }}/tesseract/build" >> "$GITHUB_OUTPUT"         
 
       - name: configure cmake
         env:
