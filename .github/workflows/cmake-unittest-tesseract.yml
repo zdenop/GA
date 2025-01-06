@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: '${{ matrix.icon }} ${{ matrix.os }}'
+    name: '${{ matrix.icon }} ${{ matrix.os }}-${{ matrix.cpp_compiler }}'
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -29,8 +29,7 @@ jobs:
 
     steps:
     - name: '📦 Install dependencies (Linux)'
-      run: |
-           # sudo apt-get update
+      run: >
            sudo apt-get install git autoconf libleptonica-dev libpango1.0-dev 
 
     - name: '🧰 Get Source'
@@ -40,7 +39,7 @@ jobs:
            git submodule update --init
            git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
            cp tessdata_unittest/fonts/* test/testing/
-           cp -r tessdata_unittest/* ../
+           cp -R -u -v tessdata_unittest/* ../
 
     - name: '️🔧 Set build output dir'
       id: strings
@@ -63,6 +62,6 @@ jobs:
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: |
-        ctest --build-config ${{ matrix.build_type }} --output-on-failure -O test-suite.log --test-dir ${{ steps.strings.outputs.build-output-dir }} # -j 4
+        ctest --build-config ${{ matrix.build_type }} --test-dir ${{ steps.strings.outputs.build-output-dir }} --output-on-failure -O test-suite.log # -j 4
       
 
