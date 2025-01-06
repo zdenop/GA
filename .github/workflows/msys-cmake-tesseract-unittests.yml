@@ -37,6 +37,7 @@ jobs:
             pango:p
 
       - name: '🧰 Get Source'
+        shell: bash
         run: |
              git clone --depth 1 https://github.com/tesseract-ocr/tesseract.git
              # git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
