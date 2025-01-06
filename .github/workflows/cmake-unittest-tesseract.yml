@@ -56,7 +56,7 @@ jobs:
         cmake -B build
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
+        -S .
         -DSW_BUILD=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=ON -DBUILD_TESTS=ON
 
     - name: Build
