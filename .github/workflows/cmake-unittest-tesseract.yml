@@ -53,7 +53,7 @@ jobs:
     - name: Configure CMake
       run: |
         cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="${{ matrix.cxxflags}}" \
-              -S . -DSW_BUILD=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=ON -DBUILD_TESTS=ON
+              -S ${{ github.workspace }}/tesseract -DSW_BUILD=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=ON -DBUILD_TESTS=ON
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
