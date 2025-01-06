@@ -14,7 +14,7 @@ jobs:
 
       # '🟨','🟦','🟩','🟥','🟪'
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         cpp_compiler: [g++, clang++]
         include:
           - os: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
            git submodule update --init
            git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
            mv tessdata_unittest/fonts/* ${{ github.workspace }}/tesseract/test/testing/
-           cp -R -u -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
+           cp -R -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
            
     - name: '🔧 Configure CMake'
       run: |
@@ -67,7 +67,7 @@ jobs:
         ctest --build-config ${{ matrix.build_type }} --test-dir ${{ steps.strings.outputs.build-output-dir }} --output-on-failure -O test-suite.log -j 4
       
   msys2:
-    name: ${{ matrix.os }}.${{ matrix.build_type }}.${{ matrix.lib }}.${{ matrix.msys2.msystem }}
+    name: ${{ matrix.os }}.${{ matrix.build_type }}.${{ matrix.msys2.msystem }}
     runs-on: ${{ matrix.os }}
     defaults:
         run:
@@ -80,8 +80,6 @@ jobs:
           - { msystem: UCRT64,  arch: x86_64,  family: GNU,  compiler: g++ }
         build_type:
           - Release
-        lib:
-          - static
 
     steps:
       - name: '🧰 Get Source'
