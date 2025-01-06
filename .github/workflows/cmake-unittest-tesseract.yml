@@ -67,7 +67,7 @@ jobs:
         ctest --build-config ${{ matrix.build_type }} --test-dir ${{ steps.strings.outputs.build-output-dir }} --output-on-failure -O test-suite.log -j 4
       
   Windows:
-    name: ${{ matrix.os }}.${{ matrix.build_type }}.${{ matrix.config.msystem }}
+    name: '⬛ ${{ matrix.os }}.${{ matrix.build_type }}.${{ matrix.config.msystem }}'
     runs-on: ${{ matrix.os }}
     defaults:
         run:
@@ -104,7 +104,7 @@ jobs:
              cd tesseract
              git submodule update --init
              git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
-             mv tessdata_unittest/fonts/* ${{ github.workspace }}/tesseract/test/testing/
+             mv tessdata_unittest/fonts/* "${{ github.workspace }}/tesseract/test/testing"
              cp -R -u -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
       - name: '️🆔 Set build output dir'
         id: strings
