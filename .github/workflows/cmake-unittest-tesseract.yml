@@ -45,7 +45,7 @@ jobs:
            cd tesseract
            git submodule update --init
            git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
-           mv tessdata_unittest/fonts/* ${{ github.workspace }}/tesseract/test/testing/fonts
+           mv tessdata_unittest/fonts/* ${{ github.workspace }}/tesseract/test/testing/
            cp -R -u -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
            
     - name: '🔧 Configure CMake'
