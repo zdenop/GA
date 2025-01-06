@@ -20,12 +20,11 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-24.04]
         build_type: [Release]
         c_compiler: [g++]
         include:
           - os: ubuntu-latest
-            c_compiler: gcc
             cpp_compiler: g++
 
     steps:
@@ -36,7 +35,7 @@ jobs:
 
     - name: Get Source
       run: |
-           git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing cmake_testing
+           git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
            cd tesseract
            git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
            cp tessdata_unittest/fonts/* test/testing/
