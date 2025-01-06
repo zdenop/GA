@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  Linux:
     name: '${{ matrix.icon }} ${{ matrix.os }}-${{ matrix.cpp_compiler }}'
     runs-on: ${{ matrix.os }}
 
@@ -66,7 +66,7 @@ jobs:
       run: |
         ctest --build-config ${{ matrix.build_type }} --test-dir ${{ steps.strings.outputs.build-output-dir }} --output-on-failure -O test-suite.log -j 4
       
-  msys2:
+  Windows:
     name: ${{ matrix.os }}.${{ matrix.build_type }}.${{ matrix.msys2.msystem }}
     runs-on: ${{ matrix.os }}
     defaults:
