@@ -1,12 +1,13 @@
 # This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
-name: Tesseract CMake Unittests
-
+name: 🔁 Tesseract CMake Unittests
+  
 on:
   workflow_dispatch:
 
 jobs:
   build:
+    name: '🟩 ${{ matrix.os }}'
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -25,8 +26,7 @@ jobs:
         build_type: [Release]
         c_compiler: [g++]
         include:
-          - icon: '🟥'
-            os: ubuntu-24.04
+          - os: ubuntu-24.04
             cpp_compiler: g++
             cxxflags: -Wno-format-security
 
