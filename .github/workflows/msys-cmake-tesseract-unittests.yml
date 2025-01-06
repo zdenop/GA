@@ -36,8 +36,13 @@ jobs:
             leptonica:p
             pango:p
 
-      - name: '🧰 Get Source'
+      - name: '️🆔 Set build output dir'
+        id: strings
         shell: bash
+        run: |
+             echo "build-output-dir=${{ github.workspace }}/tesseract/build" >> "$GITHUB_OUTPUT"
+             
+      - name: '🧰 Get Source'
         run: |
              git clone --depth 1 https://github.com/tesseract-ocr/tesseract.git
              # git clone --depth 1 https://github.com/zdenop/tesseract.git -b cmake_testing --single-branch
@@ -45,12 +50,7 @@ jobs:
              git submodule update --init
              git clone --depth 1 https://github.com/egorpugin/tessdata tessdata_unittest
              mv tessdata_unittest/fonts/* "${{ github.workspace }}/tesseract/test/testing"
-             cp -R -u -v tessdata_unittest/* ${{ github.workspace }}/tesseract/
-      - name: '️🆔 Set build output dir'
-        id: strings
-        shell: bash
-        run: |
-             echo "build-output-dir=${{ github.workspace }}/tesseract/build" >> "$GITHUB_OUTPUT"
+             copy tessdata_unittest/* ${{ github.workspace }}\tesseract
 
       - name: configure cmake
         env:
