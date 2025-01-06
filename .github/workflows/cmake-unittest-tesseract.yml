@@ -26,6 +26,7 @@ jobs:
         include:
           - os: ubuntu-24.04
             cpp_compiler: g++
+            cxxflags: -Wno-format-security
 
     steps:
     - name: Install dependencies (Linux)
@@ -52,7 +53,8 @@ jobs:
     - name: Configure CMake
       run: |
         cd tesseract
-        cmake -B build -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S . -DSW_BUILD=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=ON -DBUILD_TESTS=ON
+        cmake -B build -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS="${{ matrix.cxxflags}}" \
+              -S . -DSW_BUILD=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_TRAINING_TOOLS=ON -DBUILD_TESTS=ON
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
