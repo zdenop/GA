@@ -22,9 +22,10 @@ jobs:
         run: |
           git clone https://github.com/microsoft/vcpkg
           vcpkg/bootstrap-vcpkg.bat
+          echo "VCPKG_ROOT=${GITHUB_WORKSPACE}/vcpkg" >> $ENV:GITHUB_ENV
           vcpkg/vcpkg integrate install
-
-          echo "VCPKG_ROOT=${GITHUB_WORKSPACE}/vcpkg" >> $ENV:GITHUB_EN
+          echo "VCPKG_ROOT=${{ env.VCPKG_ROOT }}"
+          echo "$VCPKG_ROOT"
 
       - name: Install Leptonica and Image Libraries using Vcpkg
         run: |
@@ -35,9 +36,8 @@ jobs:
              git clone --depth 1 https://github.com/tesseract-ocr/tesseract.git
              cd tesseract             
              git submodule sync --recursive        
-             cmake . -B build -A x64 -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DSW_BUILD=OFF -DOPENMP_BUILD=OFF -DBUILD_TRAINING_TOOLS=OFF "-DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-             cmake --build build --config ${{ matrix.config }} --target install
-
+             cmake . -B build -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DSW_BUILD=OFF -DOPENMP_BUILD=OFF -DBUILD_TRAINING_TOOLS=OFF "-DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+             cmake --build build --config ${{ matrix.config }}
 
       - name: Create and Configure CMakeLists for basicapitest
         run: |
