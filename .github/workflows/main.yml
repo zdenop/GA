@@ -31,7 +31,6 @@ jobs:
           vcpkg/vcpkg install leptonica:x64-windows
 
       - name: Checkout, Configure and Build Tesseract
-        shell: cmd
         run: |
              git clone --depth 1 https://github.com/tesseract-ocr/tesseract.git
              cd tesseract             
