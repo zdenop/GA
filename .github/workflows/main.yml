@@ -8,13 +8,15 @@ on:
   workflow_dispatch:
   
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
+  build_and_test:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     strategy:
-      fail-fast: false
       matrix:
-        os: [windows-latest]
-
+        config: [Release, ]
+        
     steps:
       - name: Install vcpkg
         run: |
