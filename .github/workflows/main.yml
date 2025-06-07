@@ -40,7 +40,8 @@ jobs:
 
       - name: Create and Configure CMakeLists for basicapitest
         run: |
-          cd test
+          echo ${{github.workspace}}
+          cd tesseract/test
           cat << "EOF" > CMakeLists.txt
           cmake_minimum_required(VERSION 3.19)
           project(basicapitest)
@@ -58,8 +59,9 @@ jobs:
 
       - name: Build basicapitest
         run: |
-          cd test
-          cmake . "-DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+          cd tesseract/test
+          # cd test
+          cmake . "-DCMAKE_TOOLCHAIN_FILE=../../vcpkg/scripts/buildsystems/vcpkg.cmake"
           cmake --build . --config ${{ matrix.config }}
 
       - name: Download tessdata and image files used for tests
@@ -69,7 +71,8 @@ jobs:
 
       - name: Run basicapitest
         run: |
-          cd test
+          cd tesseract/test
+          # cd test
           ${{github.workspace}}\build\Release\basicapitest.exe
 
       - name: Run Tesseract CLI on test images in different languages
